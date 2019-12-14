@@ -118,7 +118,8 @@
 
                 // 波（位置）を偏微分した勾配から、法線を計算します
                 float dWave = fixTopScale * (dWave1 + dWave2);
-                o.normal = normalize(float3(dWave, dWave, -1.0f));
+                float3 objNormal = normalize(float3(dWave, dWave, -1.0f));
+                o.normal = mul((float3x3)unity_ObjectToWorld, objNormal);
 
                 #if _DROP_Y_ON
                 {
