@@ -34,7 +34,12 @@
 
     SubShader
     {
-        Tags{ "Queue" = "Geometry" "RenderType" = "Opaque" "IgnoreProjector" = "True" "LightMode" = "ForwardBase" }
+        Tags{
+            "Queue" = "Geometry"
+            "RenderType" = "Opaque"
+            "LightMode" = "ForwardBase"
+            "IgnoreProjector" = "True"
+        }
         Pass
         {
             Lighting Off
@@ -138,7 +143,7 @@
                 half diffuse = saturate(dot(i.normal, -_WorldSpaceLightPos0.xyz));
 
                 // 影の強さを _ShadowIntensity で調整します
-                // _ShadowIntensity = 0.5 で Half-Lamber と同じ効果が得られます
+                // _ShadowIntensity = 0.5 で Half-Lambert と同じ効果が得られます
                 half halfLaumber = lerp(1.0, diffuse, _ShadowIntensity);
                 col.rgb *= halfLaumber;
 
