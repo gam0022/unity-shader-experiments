@@ -94,7 +94,7 @@
                 float t1 = _WaveFreq1 * t + _WaveSpeed1 * _TIME;
 
                 // 波の高さ wave1 を計算します
-                float wave1 = _WaveAmplitude1 *  sin(t1);
+                float wave1 = _WaveAmplitude1 * sin(t1);
 
                 // wave1 を t1 で偏微分した dWave1 を計算します
                 float dWave1 = _WaveFreq1 * _WaveAmplitude1 * cos(t1);
