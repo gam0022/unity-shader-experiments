@@ -116,9 +116,9 @@
                 float wave = fixTopScale * (wave1 + wave2);
                 v.vertex += wave;
 
-                // 波を偏微分した結果から、法線を計算します
+                // 波（位置）を偏微分した勾配から、法線を計算します
                 float dWave = fixTopScale * (dWave1 + dWave2);
-                o.normal = normalize(float3(dWave, dWave, 1.0f));
+                o.normal = normalize(float3(dWave, dWave, -1.0f));
 
                 #if _DROP_Y_ON
                 {
@@ -140,7 +140,7 @@
                 col *= _TintColor * _LightColor0;
 
                 // Directional Light によってライティングします
-                half diffuse = saturate(dot(i.normal, -_WorldSpaceLightPos0.xyz));
+                half diffuse = saturate(dot(i.normal, _WorldSpaceLightPos0.xyz));
 
                 // 影の強さを _ShadowIntensity で調整します
                 // _ShadowIntensity = 0.5 で Half-Lambert と同じ効果が得られます
