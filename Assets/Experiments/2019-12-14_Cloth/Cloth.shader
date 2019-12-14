@@ -34,7 +34,7 @@
 
     SubShader
     {
-        Tags{ "Queue" = "Geometry" "RenderType" = "Opaque" "IgnoreProjector" = "True" }
+        Tags{ "Queue" = "Geometry" "RenderType" = "Opaque" "IgnoreProjector" = "True" "LightMode" = "ForwardBase" }
         Pass
         {
             Lighting Off
@@ -64,9 +64,8 @@
 
             float _DropY;
 
-            half3 _LightDirection;
+            half4 _LightColor0;
             half _ShadowIntensity;
-
             half4 _TintColor;
 
             #define _TIME (_Time.y)
@@ -81,7 +80,7 @@
             {
                 float4 vertex : SV_POSITION;
                 float2 uv : TEXCOORD0;
-                half shadow : TEXCOORD1;
+                half3 normal : TEXCOORD1;
             };
 
             v2f vert(appdata v)
@@ -112,14 +111,9 @@
                 float wave = fixTopScale * (wave1 + wave2);
                 v.vertex += wave;
 
-                // 波を偏微分した結果から法線を求めます
+                // 波を偏微分した結果から、法線を計算します
                 float dWave = fixTopScale * (dWave1 + dWave2);
-                float3 normal = normalize(float3(dWave, dWave, 1.0f));
-
-                // 法線からライティングを計算します
-                // Half-Lambert when _ShadowIntensity = 0.5
-                float3 light = normalize(_LightDirection.xyz);
-                o.shadow = lerp(1.0, saturate(dot(normal, light)), _ShadowIntensity);
+                o.normal = normalize(float3(dWave, dWave, 1.0f));
 
                 #if _DROP_Y_ON
                 {
@@ -138,8 +132,15 @@
             half4 frag(v2f i) : SV_Target
             {
                 half4 col = tex2D(_MainTex, i.uv);
-                col *= _TintColor;
-                col.rgb *= i.shadow;
+                col *= _TintColor * _LightColor0;
+
+                // Directional Light によってライティングします
+                half diffuse = saturate(dot(i.normal, -_WorldSpaceLightPos0.xyz));
+
+                // 影の強さを _ShadowIntensity で調整します
+                // _ShadowIntensity = 0.5 で Half-Lamber と同じ効果が得られます
+                half halfLaumber = lerp(1.0, diffuse, _ShadowIntensity);
+                col.rgb *= halfLaumber;
 
                 return col;
             }

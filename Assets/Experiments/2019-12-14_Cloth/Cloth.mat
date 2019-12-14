@@ -27,7 +27,7 @@ Material:
     - _CullMode: 2
     - _DROP_Y: 1
     - _DropY: 1
-    - _ShadowIntensity: 0.5
+    - _ShadowIntensity: 0.712
     - _WaveAmplitude1: 0.025
     - _WaveAmplitude2: 0.0045
     - _WaveFreq1: 8.5
