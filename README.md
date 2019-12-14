@@ -9,5 +9,7 @@
 
 A cloth shader that sways in the wind.
 
-This shader derives analytical normals, so it is lightweight enough to move on mobile.
+![cloth](Captures/cloth_shader_5s.gif)
 
+- Derives analytical normals, so it is lightweight enough to move on mobile.
+- The directional light supports.
