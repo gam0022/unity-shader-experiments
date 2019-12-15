@@ -102,3 +102,7 @@ fabric.properties
 # Unity Recorder
 Recordings/
 Capture/
+
+# Specific files
+Assets/Experiments/2019-12-14_Cloth/backup
+Assets/Experiments/2019-12-14_Cloth/backup.meta
