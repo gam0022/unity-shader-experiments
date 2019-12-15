@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Experiments/2019-12-14_Cloth/Cloth.unity
+    guid: a030007f4d8e974419cc99bd93ef1c90
   m_configObjects: {}

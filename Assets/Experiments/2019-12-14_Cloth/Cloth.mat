@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Cloth
   m_Shader: {fileID: 4800000, guid: badc4a5b837238848bde676bf695f3b2, type: 3}
-  m_ShaderKeywords: _DROP_Y_ON
+  m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -25,7 +25,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _CullMode: 2
-    - _DROP_Y: 1
+    - _DROP_Y: 0
     - _DropY: 1
     - _ShadowIntensity: 0.712
     - _WaveAmplitude1: 0.025
