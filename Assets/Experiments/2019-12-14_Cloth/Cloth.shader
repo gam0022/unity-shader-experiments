@@ -140,7 +140,7 @@
                 half4 col = tex2D(_MainTex, i.uv);
                 col *= _TintColor * _LightColor0;
 
-                // Directional Light によってライティングします
+                // DirectionalLight によってライティングします
                 half diffuse = saturate(dot(i.normal, _WorldSpaceLightPos0.xyz));
 
                 // 影の強さを _ShadowIntensity で調整します
