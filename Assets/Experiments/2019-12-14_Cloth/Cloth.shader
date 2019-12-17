@@ -145,8 +145,8 @@
 
                 // 影の強さを _ShadowIntensity で調整します
                 // _ShadowIntensity = 0.5 で Half-Lambert と同じ効果が得られます
-                half halfLaumber = lerp(1.0, diffuse, _ShadowIntensity);
-                col.rgb *= halfLaumber;
+                half halfLambert = lerp(1.0, diffuse, _ShadowIntensity);
+                col.rgb *= halfLambert;
 
                 return col;
             }
