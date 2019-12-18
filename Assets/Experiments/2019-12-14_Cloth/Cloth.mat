@@ -32,8 +32,8 @@ Material:
     - _WaveAmplitude2: 0.0045
     - _WaveFreq1: 8.5
     - _WaveFreq2: 25.3
-    - _WaveSpeed1: 9.8
-    - _WaveSpeed2: 15.4
+    - _WaveSpeed1: 10.053097
+    - _WaveSpeed2: 20.106194
     m_Colors:
     - _LightDirection: {r: 1, g: 3, b: 2, a: 0}
     - _TintColor: {r: 1, g: 1, b: 1, a: 1}
