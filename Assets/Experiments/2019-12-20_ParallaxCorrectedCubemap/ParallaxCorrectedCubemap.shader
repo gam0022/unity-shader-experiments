@@ -3,19 +3,27 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        [Toggle] _PARALLAX_CORRECTED_CUBEMAP("Parallax-Corrected Cubemap", Float) = 1
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
-        LOD 100
-
+        Tags{
+            "Queue" = "Geometry"
+            "RenderType" = "Opaque"
+            "LightMode" = "ForwardBase"
+            "IgnoreProjector" = "True"
+        }
         Pass
         {
+            ZWrite On
+            ZTest LEqual
+
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
             // make fog work
             #pragma multi_compile_fog
+            #pragma multi_compile __ _PARALLAX_CORRECTED_CUBEMAP_ON
 
             #include "UnityCG.cginc"
 
@@ -97,8 +105,12 @@
                 float3 worldViewDir = normalize(UnityWorldSpaceViewDir(i.worldPos));
                 float3 worldRefl = reflect(-worldViewDir, i.worldNormal);
 
-                //worldRefl = boxProjection(worldRefl, i.worldPos, unity_SpecCube0_ProbePosition, unity_SpecCube0_BoxMin, unity_SpecCube0_BoxMax);
-                worldRefl = calcParallaxCorrectedCubemapReflect(i.worldPos, worldRefl, unity_SpecCube0_ProbePosition, unity_SpecCube0_BoxMin, unity_SpecCube0_BoxMax);
+                #if _PARALLAX_CORRECTED_CUBEMAP_ON
+                {
+                    //worldRefl = boxProjection(worldRefl, i.worldPos, unity_SpecCube0_ProbePosition, unity_SpecCube0_BoxMin, unity_SpecCube0_BoxMax);
+                    worldRefl = calcParallaxCorrectedCubemapReflect(i.worldPos, worldRefl, unity_SpecCube0_ProbePosition, unity_SpecCube0_BoxMin, unity_SpecCube0_BoxMax);
+                }
+                #endif
 
                 half4 refColor = UNITY_SAMPLE_TEXCUBE_LOD(unity_SpecCube0, worldRefl, 0);
                 refColor.rgb = DecodeHDR(refColor, unity_SpecCube0_HDR);

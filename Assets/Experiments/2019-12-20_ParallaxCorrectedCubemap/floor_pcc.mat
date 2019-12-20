@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: floor_pcc
   m_Shader: {fileID: 4800000, guid: cf7663e977a134047b5d6460a1cb8b50, type: 3}
-  m_ShaderKeywords: _EMISSION _NORMALMAP
+  m_ShaderKeywords: _EMISSION _NORMALMAP _PARALLAX_CORRECTED_CUBEMAP_ON
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -62,6 +62,7 @@ Material:
     m_Floats:
     - _BumpScale: 1.59
     - _Cutoff: 0.5
+    - _DROP_Y: 0
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _GlossMapScale: 1
@@ -70,6 +71,7 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
+    - _PARALLAX_CORRECTED_CUBEMAP: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
