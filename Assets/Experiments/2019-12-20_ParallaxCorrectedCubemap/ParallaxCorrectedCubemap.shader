@@ -4,6 +4,7 @@
     {
         _MainTex ("Texture", 2D) = "white" {}
         [Toggle] _PARALLAX_CORRECTED_CUBEMAP("Parallax-Corrected Cubemap", Float) = 1
+        _ReflectRate ("Reflect Rate", Range(0, 1)) = 0.3
     }
     SubShader
     {
@@ -47,33 +48,21 @@
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
+            half _ReflectRate;
 
             // Parallax-Corrected Cubemap
             // https://seblagarde.files.wordpress.com/2012/08/parallax_corrected_cubemap-siggraph2012.pdf
-            half3 calcParallaxCorrectedCubemapReflect(float3 worldPos, float3 worldRefl, float3 _CubemapPos, float3 _BoxMin, float3 _BoxMax)
+            float3 calcParallaxCorrectedCubemapReflect(float3 worldPos, float3 worldReflect, float3 cubemapPos, float3 boxMin, float3 boxMax)
             {
-                float3 firstPlaneIntersect  = (_BoxMax - worldPos) / worldRefl;
-                float3 secondPlaneIntersect = (_BoxMin - worldPos) / worldRefl;
+                // AABB と 反射ベクトル の交差点 worldIntersectPos を計算します
+                float3 firstPlaneIntersect  = (boxMax - worldPos) / worldReflect;
+                float3 secondPlaneIntersect = (boxMin - worldPos) / worldReflect;
                 float3 furthestPlane = max(firstPlaneIntersect, secondPlaneIntersect);
                 float dist = min(min(furthestPlane.x, furthestPlane.y), furthestPlane.z);
-                float3 worldIntersectPos = worldPos + worldRefl * dist;
-                return worldIntersectPos - _CubemapPos;
-            }
+                float3 worldIntersectPos = worldPos + worldReflect * dist;
 
-            // Box Projectionを考慮した反射ベクトルを取得
-            float3 boxProjection(float3 normalizedDir, float3 worldPosition, float4 probePosition, float3 boxMin, float3 boxMax)
-            {
-                // GraphicsSettingsのReflection Probes Box Projectionが有効な場合のみtrue
-                //#if UNITY_SPECCUBE_BOX_PROJECTION
-                // Box Projectionが有効な場合はprobePosition.w > 0となる
-                //if (probePosition.w > 0) {
-                    float3 magnitudes = ((normalizedDir > 0 ? boxMax : boxMin) - worldPosition) / normalizedDir;
-                    float magnitude = min(min(magnitudes.x, magnitudes.y), magnitudes.z);
-                    normalizedDir = normalizedDir * magnitude + (worldPosition - probePosition);
-                //}
-                //#endif
-
-                return normalizedDir;
+                // Cubemapから交差点に向かうベクトルが ParallaxCorrected された反射ベクトルになります
+                return worldIntersectPos - cubemapPos;
             }
 
             v2f vert (appdata v)
@@ -103,19 +92,17 @@
 
                 // Cubemap
                 float3 worldViewDir = normalize(UnityWorldSpaceViewDir(i.worldPos));
-                float3 worldRefl = reflect(-worldViewDir, i.worldNormal);
+                float3 worldReflect = reflect(-worldViewDir, i.worldNormal);
 
                 #if _PARALLAX_CORRECTED_CUBEMAP_ON
                 {
-                    //worldRefl = boxProjection(worldRefl, i.worldPos, unity_SpecCube0_ProbePosition, unity_SpecCube0_BoxMin, unity_SpecCube0_BoxMax);
-                    worldRefl = calcParallaxCorrectedCubemapReflect(i.worldPos, worldRefl, unity_SpecCube0_ProbePosition, unity_SpecCube0_BoxMin, unity_SpecCube0_BoxMax);
+                    worldReflect = calcParallaxCorrectedCubemapReflect(i.worldPos, worldReflect, unity_SpecCube0_ProbePosition, unity_SpecCube0_BoxMin, unity_SpecCube0_BoxMax);
                 }
                 #endif
 
-                half4 refColor = UNITY_SAMPLE_TEXCUBE_LOD(unity_SpecCube0, worldRefl, 0);
+                half4 refColor = UNITY_SAMPLE_TEXCUBE_LOD(unity_SpecCube0, worldReflect, 0);
                 refColor.rgb = DecodeHDR(refColor, unity_SpecCube0_HDR);
-
-                col.rgb = lerp(col.rgb, refColor.rgb, 0.3);
+                col.rgb = lerp(col.rgb, refColor.rgb, _ReflectRate);
 
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);

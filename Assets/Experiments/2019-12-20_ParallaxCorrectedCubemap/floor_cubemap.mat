@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: floor_pcc
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Name: floor_cubemap
+  m_Shader: {fileID: 4800000, guid: cf7663e977a134047b5d6460a1cb8b50, type: 3}
   m_ShaderKeywords: _EMISSION _NORMALMAP _PARALLAX_CORRECTED_CUBEMAP_ON
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
@@ -73,6 +73,7 @@ Material:
     - _OcclusionStrength: 1
     - _PARALLAX_CORRECTED_CUBEMAP: 1
     - _Parallax: 0.02
+    - _ReflectRate: 0.319
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
