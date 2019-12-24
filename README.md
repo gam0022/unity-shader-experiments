@@ -23,6 +23,6 @@ A simple indoor shader.
 - Box Projection(Parallax-Corrected Cubemap)
 - Lightmap
 
-![box_projection](Captures/box_projection.gif)
+<img width="100%" src="Captures/box_projection.gif">
 
 details: [[Unity] Box Projectionで屋内シーンの反射による映り込みの品質を向上する - Qiita](https://qiita.com/gam0022/items/f20b6b55378c3ce7aa0a)
